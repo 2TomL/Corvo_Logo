@@ -10,7 +10,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.set(0, 0, 20);
+camera.position.set(0, 0, 15);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -24,27 +24,45 @@ scene.add(new THREE.AmbientLight(0xffffff, 0.3));
 
 // Helper om een C-vorm te maken (torus met open stuk)
 function createC(radius, thickness, color) {
-  // Maak een C-vormige path (blokletter, rond)
+  // Maak een C-vormige path (blokletter, rond) met rechte uiteinden
   const shape = new THREE.Shape();
-  const startAngle = Math.PI * 0.15;
-  const endAngle = Math.PI * 1.85;
+  const startAngle = Math.PI * 0.2;
+  const endAngle = Math.PI * 1.75;
   const step = Math.PI / 60;
-  // Begin op de buitenste cirkel
+  
+  // Begin op de buitenste cirkel bij startAngle
+  const startX = Math.cos(startAngle) * radius;
+  const startY = Math.sin(startAngle) * radius;
+  shape.moveTo(startX, startY);
+  
+  // Loop de buitenste cirkel af tot endAngle
   for (let angle = startAngle; angle <= endAngle; angle += step) {
     const x = Math.cos(angle) * radius;
     const y = Math.sin(angle) * radius;
-    if (angle === startAngle) {
-      shape.moveTo(x, y);
-    } else {
-      shape.lineTo(x, y);
-    }
+    shape.lineTo(x, y);
   }
-  // Nu binnenste cirkel, in omgekeerde richting
+  
+  // Voeg rechte lijn toe naar binnenste cirkel bij endAngle (recht uiteinde)
+  const endOuterX = Math.cos(endAngle) * radius;
+  const endOuterY = Math.sin(endAngle) * radius;
+  const endInnerX = Math.cos(endAngle) * (radius - thickness);
+  const endInnerY = Math.sin(endAngle) * (radius - thickness);
+  shape.lineTo(endOuterX, endOuterY);
+  shape.lineTo(endInnerX, endInnerY);
+  
+  // Loop de binnenste cirkel terug van endAngle naar startAngle
   for (let angle = endAngle; angle >= startAngle; angle -= step) {
     const x = Math.cos(angle) * (radius - thickness);
     const y = Math.sin(angle) * (radius - thickness);
     shape.lineTo(x, y);
   }
+  
+  // Voeg rechte lijn toe terug naar buitenste cirkel bij startAngle (recht uiteinde)
+  const startInnerX = Math.cos(startAngle) * (radius - thickness);
+  const startInnerY = Math.sin(startAngle) * (radius - thickness);
+  shape.lineTo(startInnerX, startInnerY);
+  shape.lineTo(startX, startY);
+  
   shape.closePath();
 
   // Extrude de shape tot een blokletter C
@@ -68,19 +86,14 @@ function createC(radius, thickness, color) {
 }
 
 // 3 C's in elkaar (onderkant niet afgesneden: alles mooi gecentreerd)
-const c1 = createC(5, 0.7, 0xff0000);
-const c2 = createC(3.8, 0.7, 0xff0000);
-const c3 = createC(2.6, 0.7, 0xff0000);
+const c1 = createC(4, 0.6, 0xff0000);
+const c2 = createC(3, 0.6, 0xff0000);
+const c3 = createC(2, 0.6, 0xff0000);
 
-// Draai de opening van de C's 30 graden (z-as)
-c1.rotation.z += THREE.MathUtils.degToRad(30);
-c2.rotation.z += THREE.MathUtils.degToRad(30);
-c3.rotation.z += THREE.MathUtils.degToRad(30);
-
-// Kantel alles 45 graden
-c1.rotation.z -= THREE.MathUtils.degToRad(35);
-c2.rotation.z -= THREE.MathUtils.degToRad(35);
-c3.rotation.z -= THREE.MathUtils.degToRad(35);
+// Zet de opening perfect verticaal in het midden
+c1.rotation.z = 0;
+c2.rotation.z = 0;
+c3.rotation.z = 0;
 
 scene.add(c1, c2, c3);
 
