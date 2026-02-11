@@ -47,9 +47,9 @@ const c2 = createC(3.8, 0.35, 0xff0000);
 const c3 = createC(2.6, 0.35, 0xff0000);
 
 // Kantel alles 45 graden
-c1.rotation.z += Math.PI / 4;
-c2.rotation.z += Math.PI / 4;
-c3.rotation.z += Math.PI / 4;
+c1.rotation.z -= THREE.MathUtils.degToRad(35);
+c2.rotation.z -= THREE.MathUtils.degToRad(35);
+c3.rotation.z -= THREE.MathUtils.degToRad(35);
 
 scene.add(c1, c2, c3);
 
