@@ -369,12 +369,12 @@ class SpeedLines {
     const material = new THREE.LineBasicMaterial({
       color: 0xff0000,
       transparent: true,
-      opacity: Math.random() * 0.5 + 0.3
+      opacity: Math.random() * 0.3 + 0.1
     });
     
     const line = new THREE.Line(geometry, material);
     
-    line.userData.speed = Math.random() * 0.15 + 0.1;
+    line.userData.speed = Math.random() * 0.05 + 0.03;
     line.userData.length = length;
     line.userData.resetX = 10;
     line.userData.minX = -10;
@@ -401,7 +401,7 @@ class SpeedLines {
         line.userData.y = newY;
         line.userData.z = newZ;
         line.userData.length = newLength;
-        line.material.opacity = Math.random() * 0.5 + 0.3;
+        line.material.opacity = Math.random() * 0.3 + 0.1;
       } else {
         // Move left
         positions.setXYZ(0, currentX - line.userData.speed, line.userData.y, line.userData.z);
