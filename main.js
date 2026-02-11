@@ -23,10 +23,37 @@ scene.add(light);
 scene.add(new THREE.AmbientLight(0xffffff, 0.3));
 
 // Helper om een C-vorm te maken (torus met open stuk)
-function createC(radius, tube, color) {
-  // arc < 2 * Math.PI => open ring (C)
-  const arc = Math.PI * 1.4; // hoe kleiner, hoe meer 'open'
-  const geometry = new THREE.TorusGeometry(radius, tube, 32, 100, arc);
+function createC(radius, thickness, color) {
+  // Maak een C-vormige path (blokletter, rond)
+  const shape = new THREE.Shape();
+  const startAngle = Math.PI * 0.15;
+  const endAngle = Math.PI * 1.85;
+  const step = Math.PI / 60;
+  // Begin op de buitenste cirkel
+  for (let angle = startAngle; angle <= endAngle; angle += step) {
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
+    if (angle === startAngle) {
+      shape.moveTo(x, y);
+    } else {
+      shape.lineTo(x, y);
+    }
+  }
+  // Nu binnenste cirkel, in omgekeerde richting
+  for (let angle = endAngle; angle >= startAngle; angle -= step) {
+    const x = Math.cos(angle) * (radius - thickness);
+    const y = Math.sin(angle) * (radius - thickness);
+    shape.lineTo(x, y);
+  }
+  shape.closePath();
+
+  // Extrude de shape tot een blokletter C
+  const extrudeSettings = {
+    steps: 1,
+    depth: thickness,
+    bevelEnabled: false
+  };
+  const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
   const material = new THREE.MeshStandardMaterial({
     color,
     metalness: 0.4,
@@ -34,17 +61,21 @@ function createC(radius, tube, color) {
   });
   const mesh = new THREE.Mesh(geometry, material);
 
-  // Open kant naar boven laten wijzen (midden van opening verticaal centraal)
-  mesh.rotation.y = 0;
-  mesh.rotation.z = Math.PI / 2;
+  // Centreer zodat opening verticaal
+  geometry.center();
 
   return mesh;
 }
 
 // 3 C's in elkaar (onderkant niet afgesneden: alles mooi gecentreerd)
-const c1 = createC(5, 0.35, 0xff0000);
-const c2 = createC(3.8, 0.35, 0xff0000);
-const c3 = createC(2.6, 0.35, 0xff0000);
+const c1 = createC(5, 0.7, 0xff0000);
+const c2 = createC(3.8, 0.7, 0xff0000);
+const c3 = createC(2.6, 0.7, 0xff0000);
+
+// Draai de opening van de C's 30 graden (z-as)
+c1.rotation.z += THREE.MathUtils.degToRad(30);
+c2.rotation.z += THREE.MathUtils.degToRad(30);
+c3.rotation.z += THREE.MathUtils.degToRad(30);
 
 // Kantel alles 45 graden
 c1.rotation.z -= THREE.MathUtils.degToRad(35);
