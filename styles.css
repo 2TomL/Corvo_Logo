@@ -7,3 +7,43 @@ body {
 canvas { 
   display: block; 
 }
+
+@keyframes metalShine {
+  0%, 100% {
+    background-position: -200% center;
+  }
+  50% {
+    background-position: 200% center;
+  }
+}
+
+.twitch-link {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    #8b0000 0%,
+    #ff0000 25%,
+    #ff6666 50%,
+    #ff0000 75%,
+    #8b0000 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: metalShine 3s ease-in-out infinite;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 
+    1px 1px 0 rgba(204, 0, 0, 0.8),
+    2px 2px 0 rgba(170, 0, 0, 0.6),
+    3px 3px 0 rgba(136, 0, 0, 0.4),
+    4px 4px 0 rgba(102, 0, 0, 0.2),
+    5px 5px 15px rgba(0, 0, 0, 0.8);
+  z-index: 10;
+  pointer-events: none;
+}

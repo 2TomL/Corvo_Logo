@@ -84,24 +84,13 @@ c3.rotation.z -= THREE.MathUtils.degToRad(35);
 
 scene.add(c1, c2, c3);
 
-// Optioneel: een donkergrijze ruit in het midden (abstract symbool)
-const diamondGeom = new THREE.PlaneGeometry(2.2, 2.2);
-const diamondMat = new THREE.MeshStandardMaterial({
-  color: 0x222222,
-  side: THREE.DoubleSide
-});
-const diamond = new THREE.Mesh(diamondGeom, diamondMat);
-diamond.rotation.z = Math.PI / 4 * 2; // ruitvorm + extra 45 graden
-diamond.position.set(0, 0, -0.1);
-scene.add(diamond);
-
 // Animatie: elke C draait rond eigen as, tegengestelde richting
 function animate() {
   requestAnimationFrame(animate);
 
-  c1.rotation.y += 0.01;
-  c2.rotation.y -= 0.012;
-  c3.rotation.y += 0.014;
+  c1.rotation.y += 0.006;
+  c2.rotation.y -= 0.007;
+  c3.rotation.y += 0.008;
 
   renderer.render(scene, camera);
 }
