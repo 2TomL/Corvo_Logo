@@ -104,11 +104,11 @@ class ElectricBorder {
     this.octaves = 12;
     this.lacunarity = 2.0;
     this.gain = 0.65;
-    this.amplitude = 0.08;
+    this.amplitude = 0.12; // iets minder breed
     this.frequency = 15;
     this.baseFlatness = 0;
-    this.displacement = 0.15;
-    this.speed = 2.5;
+    this.displacement = 0.22; // iets minder breed
+    this.speed = 0.3; // nog trager
   }
 
   random(x) {
@@ -176,7 +176,7 @@ class ElectricBorder {
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({ 
       color: 0xff0000,
-      linewidth: 2
+      linewidth: 4 // iets minder breed
     });
     const line = new THREE.Line(geometry, material);
     
@@ -205,7 +205,7 @@ class ElectricBorder {
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({ 
       color: 0xff0000,
-      linewidth: 2
+      linewidth: 4 // iets minder breed
     });
     const line = new THREE.Line(geometry, material);
     
@@ -235,7 +235,7 @@ class ElectricBorder {
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({ 
       color: 0xff0000,
-      linewidth: 2
+      linewidth: 4 // iets minder breed
     });
     const line = new THREE.Line(geometry, material);
     
